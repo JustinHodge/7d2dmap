@@ -21,29 +21,7 @@ const MapRender = (props) => {
     const mapInfoReader = new FileReader();
     const domParser = new DOMParser();
 
-    const [mapDisplayData, setMapDisplayData] = useState({
-        xCenter: 0,
-        yCenter: 0,
-        mapWidth: 0,
-        mapHeight: 0,
-    });
-
     const [prefabs, setPrefabs] = useState([]);
-
-    useEffect(() => {
-        const mapDiv = document.getElementById('map');
-        const divWidth = mapDiv?.clientWidth;
-        const divHeight = mapDiv?.clientHeight;
-        const mapYOffset = mapDiv?.offsetTop;
-        const mapXOffset = mapDiv?.offsetLeft;
-
-        setMapDisplayData({
-            mapHeight: divHeight,
-            mapWidth: divWidth,
-            yCenter: mapYOffset + divHeight / 2,
-            xCenter: mapXOffset + divWidth / 2,
-        });
-    }, []);
 
     prefabReader.onload = () => {
         if (typeof prefabReader.result !== 'string') {
@@ -131,13 +109,7 @@ const MapRender = (props) => {
                 }}
             >
                 {prefabs.map((prefab, index, array) => {
-                    console.log(prefabs.length);
-                    return (
-                        <PointOfInterest
-                            mapDisplayData={mapDisplayData}
-                            prefab={prefab ?? []}
-                        />
-                    );
+                    return <PointOfInterest prefab={prefab ?? []} />;
                 })}
 
                 {/* <div
