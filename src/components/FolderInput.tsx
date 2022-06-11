@@ -40,6 +40,16 @@ const FolderInput = (props) => {
                     multiple
                 />
             </div>
+            <div>
+                <label> Map Info </label>
+                <input
+                    className='folder-input'
+                    type='file'
+                    onChange={(event) => changeUploadedFiles(event, 'mapinfo')}
+                    accept={'.xml'}
+                    multiple
+                />
+            </div>
         </>
     );
 };

@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import PointsOfInterest from './PointsOfInterest';
+
 const createPosition = (positionString) => {
     const positionObject = { rawPosition: positionString };
     const positionParts = positionString.split(',');
@@ -13,12 +16,37 @@ const createPosition = (positionString) => {
 };
 
 const MapRender = (props) => {
-    const reader = new FileReader();
+    const prefabReader = new FileReader();
+    const mapInfoReader = new FileReader();
     const domParser = new DOMParser();
-    let prefabs = [];
-    reader.onload = (event) => {
-        if (typeof reader.result === 'string') {
-            const prefabXMLString = reader.result;
+
+    const [mapDisplayData, setMapDisplayData] = useState({
+        xCenter: 0,
+        yCenter: 0,
+        mapWidth: 0,
+        mapHeight: 0,
+    });
+
+    const [prefabs, setPrefabs] = useState([]);
+
+    useEffect(() => {
+        const mapDiv = document.getElementById('map');
+        const divWidth = mapDiv?.clientWidth;
+        const divHeight = mapDiv?.clientHeight;
+        const mapYOffset = mapDiv?.offsetTop;
+        const mapXOffset = mapDiv?.offsetLeft;
+
+        setMapDisplayData({
+            mapHeight: divHeight,
+            mapWidth: divWidth,
+            yCenter: mapYOffset + divHeight / 2,
+            xCenter: mapXOffset + divWidth / 2,
+        });
+    }, []);
+
+    prefabReader.onload = () => {
+        if (typeof prefabReader.result === 'string') {
+            const prefabXMLString = prefabReader.result;
             if (prefabXMLString) {
                 const prefabXML = domParser.parseFromString(
                     prefabXMLString,
@@ -34,30 +62,78 @@ const MapRender = (props) => {
                             decoration.getAttribute('position')
                         ),
                         rotation: decoration.getAttribute('rotation'),
+                        visible: true,
                     });
+
+                    setPrefabs(prefabs);
                 }
+            }
+        }
+    };
 
-                console.log(prefabs);
-
-                prefabs.forEach((element) => {});
+    mapInfoReader.onload = () => {
+        if (typeof mapInfoReader.result === 'string') {
+            const mapInfoXMLString = mapInfoReader.result;
+            if (mapInfoXMLString) {
+                const mapInfoXML = domParser.parseFromString(
+                    mapInfoXMLString,
+                    'text/xml'
+                );
+                const properties = mapInfoXML.getElementsByTagName('property');
+                for (const property of properties) {
+                    const propertyName = property.getAttribute('name');
+                    const propertyValue = property.getAttribute('value');
+                    if (propertyName && propertyValue) {
+                        setMapDisplayData({
+                            ...mapDisplayData,
+                            [propertyName]: propertyValue,
+                        });
+                    }
+                }
             }
         }
     };
 
     if (props.uploadedFiles.prefabs) {
-        reader.readAsText(props.uploadedFiles.prefabs);
+        prefabReader.readAsText(props.uploadedFiles.prefabs);
+    }
+
+    if (props.uploadedFiles.mapinfo) {
+        mapInfoReader.readAsText(props.uploadedFiles.mapinfo);
     }
 
     return (
         <div className='map-render'>
-            <img
-                style={{ maxWidth: '85vw', maxHeight: '88vh' }}
-                src={
-                    props.uploadedFiles?.biomes
-                        ? URL.createObjectURL(props.uploadedFiles.biomes)
-                        : ''
-                }
-            />
+            <div
+                id='map'
+                style={{
+                    width: '85vw',
+                    height: '88vh',
+                    backgroundImage: props.uploadedFiles?.biomes
+                        ? `url(${URL.createObjectURL(
+                              props.uploadedFiles.biomes
+                          )})`
+                        : '',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                }}
+            >
+                <PointsOfInterest
+                    mapDisplayData={mapDisplayData}
+                    prefabs={prefabs ?? []}
+                />
+                {/* <div
+                    style={{
+                        width: '25px',
+                        height: '25px',
+                        backgroundColor: 'red',
+                        position: 'absolute',
+                        top: mapDisplayData.yCenter,
+                        left: mapDisplayData.xCenter,
+                    }}
+                ></div> */}
+            </div>
         </div>
     );
 };
