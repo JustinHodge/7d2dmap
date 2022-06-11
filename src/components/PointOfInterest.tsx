@@ -1,27 +1,26 @@
-const PointsOfInterest = ({ mapDisplayData, prefabs }) => {
-    console.log('oops');
-    console.log(mapDisplayData);
+const PointOfInterest = ({ mapDisplayData, prefab }) => {
+    console.count(mapDisplayData);
+    if (!prefab || !prefab.hasOwnProperty('position')) {
+        return null;
+    }
+
     return (
         <>
-            {prefabs.map((prefab, index, array) => {
-                return (
-                    <div
-                        key={index}
-                        style={{
-                            width: '5px',
-                            height: '5px',
-                            position: 'absolute',
-                            backgroundColor: 'red',
-                            top:
-                                mapDisplayData.yCenter -
-                                prefab.position.yPosition.numericalValue / 9,
-                            left:
-                                mapDisplayData.xCenter +
-                                prefab.position.xPosition.numericalValue / 9,
-                        }}
-                    ></div>
-                );
-            })}
+            <div
+                key={Math.random()}
+                style={{
+                    width: '5px',
+                    height: '5px',
+                    position: 'absolute',
+                    backgroundColor: 'red',
+                    top:
+                        mapDisplayData.yCenter -
+                        prefab.position.yPosition.numericalValue / 9,
+                    left:
+                        mapDisplayData.xCenter +
+                        prefab.position.xPosition.numericalValue / 9,
+                }}
+            ></div>
 
             {/* {
                 for(const prefab of prefabs) {
@@ -50,4 +49,4 @@ const PointsOfInterest = ({ mapDisplayData, prefabs }) => {
     );
 };
 
-export default PointsOfInterest;
+export default PointOfInterest;
