@@ -25,6 +25,9 @@ body {
 }
 
 .map-render {
+    overflow:scroll;
+    max-width: 85vw;
+    max-height: 88vh;
 
 }
 
