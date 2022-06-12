@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 const PointOfInterest = ({ prefab }) => {
-    console.count('prefab');
     const [mapDisplayData, setMapDisplayData] = useState({
         xCenter: 0,
         yCenter: 0,
@@ -9,20 +8,20 @@ const PointOfInterest = ({ prefab }) => {
         mapHeight: 0,
     });
 
-    useEffect(() => {
-        const mapDiv = document.getElementById('map');
-        const divWidth = mapDiv?.clientWidth;
-        const divHeight = mapDiv?.clientHeight;
-        const mapYOffset = mapDiv?.offsetTop;
-        const mapXOffset = mapDiv?.offsetLeft;
+    // useEffect(() => {
+    //     const mapDiv = document.getElementById('map');
+    //     const divWidth = mapDiv?.clientWidth;
+    //     const divHeight = mapDiv?.clientHeight;
+    //     const mapYOffset = mapDiv?.offsetTop;
+    //     const mapXOffset = mapDiv?.offsetLeft;
 
-        setMapDisplayData({
-            mapHeight: divHeight,
-            mapWidth: divWidth,
-            yCenter: mapYOffset + divHeight / 2,
-            xCenter: mapXOffset + divWidth / 2,
-        });
-    }, []);
+    //     setMapDisplayData({
+    //         mapHeight: divHeight,
+    //         mapWidth: divWidth,
+    //         yCenter: mapYOffset + divHeight / 2,
+    //         xCenter: mapXOffset + divWidth / 2,
+    //     });
+    // }, []);
 
     if (!prefab || !prefab.hasOwnProperty('position')) {
         return null;
