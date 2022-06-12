@@ -1,60 +1,14 @@
 import { useEffect, useState } from 'react';
 import ControlBar from './ControlBar';
 import MapRender from './MapRender';
+import {
+    IContentPanelProps,
+    IFileList,
+    IMapData,
+    IMapInfo,
+    IPosition,
+} from '../Types/AppTypes';
 
-interface IPosition {
-    rawPosition: string;
-    xPosition: {
-        numericalValue: number;
-    };
-    yPosition: {
-        numericalValue: number;
-    };
-    zPosition: {
-        numericalValue: number;
-    };
-}
-
-interface IMapCoordinates {
-    xCoord: number;
-    yCoord: number;
-}
-
-interface IDivSize {
-    height: number | string;
-    width: number | string;
-}
-
-interface IMapInfo {
-    HeightMapSize?: string;
-    mapGivenSize?: IDivSize;
-    mapDisplayedSize?: IDivSize;
-    Scale?: number;
-    Modes?: string;
-    FixedWaterLevel?: boolean;
-    RandomGeneratedWorld?: boolean;
-    GameVersion?: string;
-    GenerationSeed?: string;
-}
-
-interface IPrefabData {}
-
-interface IMapData {
-    biomes?: File;
-    prefabs: Array<IPrefabData>;
-    mapCenter: IMapCoordinates;
-    mapInfo: IMapInfo;
-    defaultSize: IDivSize;
-    biomesURL?: string;
-}
-
-interface IFileList {
-    biomes?: File;
-    mapinfo?: File;
-    prefabs?: File;
-}
-
-interface IContentPanelProps {}
 const createPosition = (positionString: string) => {
     const positionParts = positionString.split(',');
     const rawX = positionParts[0];
