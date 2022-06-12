@@ -2,30 +2,101 @@ import { useEffect, useState } from 'react';
 import ControlBar from './ControlBar';
 import MapRender from './MapRender';
 
-const createPosition = (positionString) => {
-    const positionObject = { rawPosition: positionString };
+interface IPosition {
+    rawPosition: string;
+    xPosition: {
+        numericalValue: number;
+    };
+    yPosition: {
+        numericalValue: number;
+    };
+    zPosition: {
+        numericalValue: number;
+    };
+}
+
+interface IMapCoordinates {
+    xCoord: number;
+    yCoord: number;
+}
+
+interface IDivSize {
+    height: number | string;
+    width: number | string;
+}
+
+interface IMapInfo {
+    HeightMapSize?: string;
+    mapGivenSize?: IDivSize;
+    mapDisplayedSize?: IDivSize;
+    Scale?: number;
+    Modes?: string;
+    FixedWaterLevel?: boolean;
+    RandomGeneratedWorld?: boolean;
+    GameVersion?: string;
+    GenerationSeed?: string;
+}
+
+interface IPrefabData {}
+
+interface IMapData {
+    biomes?: File;
+    prefabs: Array<IPrefabData>;
+    mapCenter: IMapCoordinates;
+    mapInfo: IMapInfo;
+    defaultSize: IDivSize;
+    biomesURL?: string;
+}
+
+interface IFileList {
+    biomes?: File;
+    mapinfo?: File;
+    prefabs?: File;
+}
+
+interface IContentPanelProps {}
+const createPosition = (positionString: string) => {
     const positionParts = positionString.split(',');
     const rawX = positionParts[0];
     const rawZ = positionParts[1];
     const rawY = positionParts[2];
 
-    positionObject.xPosition = { numericalValue: rawX };
-    positionObject.yPosition = { numericalValue: rawY };
-    positionObject.zPosition = { numericalValue: rawZ };
+    const xPosition = {
+        numericalValue: Number.isInteger(rawX)
+            ? (rawX as unknown as number)
+            : 0,
+    };
+    const yPosition = {
+        numericalValue: Number.isInteger(rawY)
+            ? (rawY as unknown as number)
+            : 0,
+    };
+    const zPosition = {
+        numericalValue: Number.isInteger(rawZ)
+            ? (rawZ as unknown as number)
+            : 0,
+    };
+
+    const positionObject: IPosition = {
+        rawPosition: positionString,
+        xPosition,
+        yPosition,
+        zPosition,
+    };
 
     return positionObject;
 };
 
-const ContentPanel = (props) => {
-    const [uploadedFiles, setUploadedFiles] = useState({});
+const ContentPanel = (props: IContentPanelProps) => {
+    const [uploadedFiles, setUploadedFiles] = useState({} as IFileList);
     const [zoomPercent, setZoomPercent] = useState(25);
     const [mapData, setMapData] = useState({
-        biomes: '',
+        biomes: undefined,
         prefabs: [],
-        mapCenter: { xCenter: 0, yCenter: 0 },
+        mapCenter: { xCoord: 0, yCoord: 0 },
         mapInfo: {},
         defaultSize: { height: '500px', width: '500px' },
-    });
+    } as IMapData);
 
     const prefabReader = new FileReader();
     const mapInfoReader = new FileReader();
@@ -53,7 +124,9 @@ const ContentPanel = (props) => {
             const newPrefab = {
                 type: decoration.getAttribute('type'),
                 name: decoration.getAttribute('name'),
-                position: createPosition(decoration.getAttribute('position')),
+                position: createPosition(
+                    decoration.getAttribute('position') ?? '0,0,0'
+                ),
                 rotation: decoration.getAttribute('rotation'),
                 visible: true,
             };
@@ -81,17 +154,25 @@ const ContentPanel = (props) => {
 
         const properties = mapInfoXML.getElementsByTagName('property');
 
-        const newMapInfo = {};
+        const newMapInfo: IMapInfo = {};
         for (const property of properties) {
             const propertyName = property.getAttribute('name') as string;
             const propertyValue = property.getAttribute('value') as any;
-            newMapInfo[propertyName] = propertyValue;
+            newMapInfo[propertyName as keyof typeof newMapInfo] = propertyValue;
         }
 
-        const mapSizeParts = newMapInfo.HeightMapSize.split(',');
+        console.log(newMapInfo);
+
+        const mapSizeParts = newMapInfo?.HeightMapSize?.split(',');
         const mapGivenSize = {
-            width: mapSizeParts[0],
-            height: mapSizeParts[1],
+            width:
+                Array.isArray(mapSizeParts) && mapSizeParts[0]
+                    ? mapSizeParts[0]
+                    : '',
+            height:
+                Array.isArray(mapSizeParts) && mapSizeParts[1]
+                    ? mapSizeParts[1]
+                    : '',
         };
 
         newMapInfo.mapGivenSize = mapGivenSize;
@@ -119,14 +200,24 @@ const ContentPanel = (props) => {
             const tmp_img = new Image();
             tmp_img.src = biomesURL;
             tmp_img.onload = (event) => {
-                newDefaultSize.height = event.currentTarget.height;
-                newDefaultSize.width = event.currentTarget.width;
+                newDefaultSize.height = (
+                    event?.currentTarget as HTMLImageElement
+                )?.height.toString();
+                newDefaultSize.width = (
+                    event?.currentTarget as HTMLImageElement
+                )?.width.toString();
+
+                const mapCenter = {
+                    xCoord: parseInt(newDefaultSize.height) / 2,
+                    yCoord: parseInt(newDefaultSize.width) / 2,
+                };
 
                 setMapData({
                     ...mapData,
                     defaultSize: newDefaultSize,
                     biomes: uploadedFiles.biomes,
                     biomesURL: biomesURL,
+                    mapCenter: mapCenter,
                 });
             };
         }
@@ -134,13 +225,22 @@ const ContentPanel = (props) => {
 
     useEffect(() => {
         const { height, width } = mapData.mapInfo.mapGivenSize ?? {};
+        if (height === undefined || width === undefined) {
+            return;
+        }
         setMapData({
             ...mapData,
             mapInfo: {
                 ...mapData.mapInfo,
                 mapDisplayedSize: {
-                    height: height * (zoomPercent / 100),
-                    width: width * (zoomPercent / 100),
+                    height:
+                        (typeof height === 'string'
+                            ? parseInt(height)
+                            : height) *
+                        (zoomPercent / 100),
+                    width:
+                        (typeof width === 'string' ? parseInt(width) : width) *
+                        (zoomPercent / 100),
                 },
             },
         });
