@@ -29,16 +29,14 @@ body {
     width: 85vw;
     height: 88vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #map {
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center center;
-    flex-grow: 0;
+    margin: auto;
     flex-shrink: 0;
+    box-sizing: content-box;
 }
 
 .header-bar {

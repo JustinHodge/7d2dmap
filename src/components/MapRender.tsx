@@ -25,7 +25,7 @@ const MapRender = ({ mapData }) => {
                         width: '25px',
                         height: '25px',
                         backgroundColor: 'red',
-                        position: 'absolute',
+                        position: 'relative',
                         top: mapData.mapCenter.yCenter,
                         left: mapData.mapCenter.xCenter,
                     }}
