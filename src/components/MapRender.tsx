@@ -14,9 +14,6 @@ const MapRender = ({ mapData }) => {
                     backgroundImage: mapData?.biomes
                         ? `url(${URL.createObjectURL(mapData.biomes)})`
                         : '',
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
                 }}
             >
                 {/* {prefabs.map((prefab, index, array) => {
