@@ -24,6 +24,7 @@ const ContentPanel = (props) => {
         prefabs: [],
         mapCenter: { xCenter: 0, yCenter: 0 },
         mapInfo: {},
+        defaultSize: { height: '500px', width: '500px' },
     });
 
     const prefabReader = new FileReader();
@@ -108,7 +109,26 @@ const ContentPanel = (props) => {
         }
 
         if (uploadedFiles.biomes) {
-            setMapData({ ...mapData, biomes: uploadedFiles.biomes });
+            const newDefaultSize = {
+                height: '500px',
+                width: '500px',
+            };
+
+            const biomesURL = URL.createObjectURL(uploadedFiles.biomes);
+
+            const tmp_img = new Image();
+            tmp_img.src = biomesURL;
+            tmp_img.onload = (event) => {
+                newDefaultSize.height = event.currentTarget.height;
+                newDefaultSize.width = event.currentTarget.width;
+
+                setMapData({
+                    ...mapData,
+                    defaultSize: newDefaultSize,
+                    biomes: uploadedFiles.biomes,
+                    biomesURL: biomesURL,
+                });
+            };
         }
     }, [uploadedFiles]);
 
