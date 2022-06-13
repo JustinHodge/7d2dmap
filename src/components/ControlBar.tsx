@@ -1,7 +1,9 @@
+import { IControlBarProps } from '../Types/AppTypes';
 import FolderInput from './FolderInput';
 
-const adjustZoom = (currentZoom, adjustment) => {
+const adjustZoom = (currentZoom: number, adjustment: number) => {
     const potentialNewZoom = currentZoom + adjustment;
+
     if (potentialNewZoom >= 100) {
         return 100;
     }
@@ -12,7 +14,8 @@ const adjustZoom = (currentZoom, adjustment) => {
 
     return potentialNewZoom;
 };
-const ControlBar = (props) => {
+
+const ControlBar = (props: IControlBarProps) => {
     return (
         <div className='control-bar'>
             <FolderInput

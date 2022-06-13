@@ -44,6 +44,13 @@ export interface IMapData {
     biomesURL?: string;
 }
 
+export interface IControlBarProps {
+    uploadedFiles: IFileList;
+    setUploadedFiles: (newUploadedFiles: IFileList) => void;
+    zoomPercent: number;
+    setZoomPercent: (newZoomPercent: number) => void;
+}
+
 export interface IFileList {
     biomes?: File;
     mapinfo?: File;
