@@ -1,4 +1,6 @@
-const MapRender = ({ mapData }) => {
+import { IMapRenderProps } from '../Types/AppTypes';
+
+const MapRender = ({ mapData }: IMapRenderProps) => {
     const height = mapData?.defaultSize.height
         ? mapData.defaultSize.height
         : '500px';
@@ -13,15 +15,11 @@ const MapRender = ({ mapData }) => {
 
     if (mapData?.mapInfo?.mapDisplayedSize?.width) {
         mapStyles.width = mapData.mapInfo.mapDisplayedSize.width;
-        delete mapStyles.maxWidth;
     }
 
     if (mapData?.mapInfo?.mapDisplayedSize?.height) {
         mapStyles.height = mapData.mapInfo.mapDisplayedSize.height;
-        delete mapStyles.maxHeight;
     }
-
-    console.log(mapStyles, mapData);
 
     return (
         <div className='map-render'>
@@ -36,8 +34,8 @@ const MapRender = ({ mapData }) => {
                         height: '25px',
                         backgroundColor: 'red',
                         position: 'relative',
-                        top: mapData.mapCenter.yCenter,
-                        left: mapData.mapCenter.xCenter,
+                        top: mapData.mapCenter.yCoord,
+                        left: mapData.mapCenter.xCoord,
                     }}
                 ></div>
             </div>

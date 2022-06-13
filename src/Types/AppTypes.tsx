@@ -35,6 +35,10 @@ export interface IMapInfo {
 
 export interface IPrefabData {}
 
+export interface IMapRenderProps {
+    mapData: IMapData;
+}
+
 export interface IMapData {
     biomes?: File;
     prefabs: Array<IPrefabData>;
