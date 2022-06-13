@@ -1,11 +1,11 @@
 import { IMapRenderProps } from '../Types/AppTypes';
 
 const MapRender = ({ mapData }: IMapRenderProps) => {
-    const height = mapData?.defaultSize.height
-        ? mapData.defaultSize.height
+    const height = mapData?.mapInfo?.mapGivenSize?.height
+        ? mapData.mapInfo?.mapGivenSize.height
         : '500px';
-    const width = mapData?.defaultSize.width
-        ? mapData.defaultSize.width
+    const width = mapData?.mapInfo?.mapGivenSize?.width
+        ? mapData.mapInfo?.mapGivenSize.width
         : '500px';
     const mapStyles = {
         height: height,

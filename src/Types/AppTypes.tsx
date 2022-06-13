@@ -44,7 +44,6 @@ export interface IMapData {
     prefabs: Array<IPrefabData>;
     mapCenter: IMapCoordinates;
     mapInfo: IMapInfo;
-    defaultSize: IDivSize;
     biomesURL?: string;
 }
 

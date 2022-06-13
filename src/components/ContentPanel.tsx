@@ -48,8 +48,7 @@ const ContentPanel = (props: IContentPanelProps) => {
         biomes: undefined,
         prefabs: [],
         mapCenter: { xCoord: 0, yCoord: 0 },
-        mapInfo: {},
-        defaultSize: { height: '500px', width: '500px' },
+        mapInfo: { mapGivenSize: { height: '500px', width: '500px' } },
     } as IMapData);
 
     const prefabReader = new FileReader();
@@ -92,12 +91,14 @@ const ContentPanel = (props: IContentPanelProps) => {
 
     mapInfoReader.onloadend = () => {
         if (typeof mapInfoReader.result !== 'string') {
+            console.error('mapInfoReader.result is not string');
             return;
         }
 
         const mapInfoXMLString = mapInfoReader.result;
 
         if (!mapInfoXMLString) {
+            console.error('mapInfoReader.result is empty');
             return;
         }
 
@@ -114,8 +115,6 @@ const ContentPanel = (props: IContentPanelProps) => {
             const propertyValue = property.getAttribute('value') as any;
             newMapInfo[propertyName as keyof typeof newMapInfo] = propertyValue;
         }
-
-        console.log(newMapInfo);
 
         const mapSizeParts = newMapInfo?.HeightMapSize?.split(',');
         const mapGivenSize = {
@@ -144,7 +143,7 @@ const ContentPanel = (props: IContentPanelProps) => {
         }
 
         if (uploadedFiles.biomes) {
-            const newDefaultSize = {
+            const newGivenSize = {
                 height: '500px',
                 width: '500px',
             };
@@ -154,24 +153,27 @@ const ContentPanel = (props: IContentPanelProps) => {
             const tmp_img = new Image();
             tmp_img.src = biomesURL;
             tmp_img.onload = (event) => {
-                newDefaultSize.height = (
+                newGivenSize.height = (
                     event?.currentTarget as HTMLImageElement
                 )?.height.toString();
-                newDefaultSize.width = (
+                newGivenSize.width = (
                     event?.currentTarget as HTMLImageElement
                 )?.width.toString();
 
                 const mapCenter = {
-                    xCoord: parseInt(newDefaultSize.height) / 2,
-                    yCoord: parseInt(newDefaultSize.width) / 2,
+                    xCoord: parseInt(newGivenSize.height) / 2,
+                    yCoord: parseInt(newGivenSize.width) / 2,
                 };
 
                 setMapData({
                     ...mapData,
-                    defaultSize: newDefaultSize,
                     biomes: uploadedFiles.biomes,
                     biomesURL: biomesURL,
                     mapCenter: mapCenter,
+                    mapInfo: {
+                        ...mapData.mapInfo,
+                        mapGivenSize: newGivenSize,
+                    },
                 });
             };
         }
@@ -179,25 +181,30 @@ const ContentPanel = (props: IContentPanelProps) => {
 
     useEffect(() => {
         const { height, width } = mapData.mapInfo.mapGivenSize ?? {};
+
         if (height === undefined || width === undefined) {
+            console.error('mapData.MapInfo.mapGivenSize has undefined member');
             return;
         }
-        setMapData({
-            ...mapData,
-            mapInfo: {
-                ...mapData.mapInfo,
-                mapDisplayedSize: {
-                    height:
-                        (typeof height === 'string'
-                            ? parseInt(height)
-                            : height) *
-                        (zoomPercent / 100),
-                    width:
-                        (typeof width === 'string' ? parseInt(width) : width) *
-                        (zoomPercent / 100),
-                },
+
+        const newMapInfo = {
+            ...mapData.mapInfo,
+            mapDisplayedSize: {
+                height:
+                    (typeof height === 'string' ? parseInt(height) : height) *
+                    (zoomPercent / 100),
+                width:
+                    (typeof width === 'string' ? parseInt(width) : width) *
+                    (zoomPercent / 100),
             },
-        });
+        };
+
+        const newMapData = {
+            ...mapData,
+            mapInfo: newMapInfo,
+        };
+
+        setMapData(newMapData);
     }, [mapData.mapInfo.mapGivenSize, zoomPercent]);
 
     return (
