@@ -39,7 +39,7 @@ const createPosition = (
     const yPosition = {
         numericalValue:
             parseInt(rawY) !== NaN
-                ? mapCenter.yCoord + parseInt(rawY) * (zoomPercent / 100)
+                ? mapCenter.yCoord - parseInt(rawY) * (zoomPercent / 100)
                 : 0,
     };
     const zPosition = {
