@@ -8,8 +8,8 @@ const adjustZoom = (currentZoom: number, adjustment: number) => {
         return 100;
     }
 
-    if (potentialNewZoom <= 0) {
-        return 0;
+    if (potentialNewZoom <= 10) {
+        return 10;
     }
 
     return potentialNewZoom;
