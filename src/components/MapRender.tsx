@@ -1,7 +1,7 @@
 import { IMapRenderProps } from '../Types/AppTypes';
+import PointOfInterest from './PointOfInterest';
 
 const MapRender = ({ mapData }: IMapRenderProps) => {
-    console.log('mapData', mapData);
     const height = mapData?.mapInfo?.mapGivenSize?.height
         ? mapData.mapInfo?.mapGivenSize.height
         : '500px';
@@ -25,11 +25,11 @@ const MapRender = ({ mapData }: IMapRenderProps) => {
     return (
         <div className='map-render'>
             <div id='map' style={mapStyles}>
-                {/* {prefabs.map((prefab, index, array) => {
+                {mapData.prefabs.map((prefab, index, array) => {
                     return <PointOfInterest prefab={prefab ?? []} />;
-                })} */}
+                })}
 
-                <div
+                {/* <div
                     style={{
                         width: '25px',
                         height: '25px',
@@ -38,7 +38,7 @@ const MapRender = ({ mapData }: IMapRenderProps) => {
                         top: mapData.mapCenter.yCoord,
                         left: mapData.mapCenter.xCoord,
                     }}
-                ></div>
+                ></div> */}
             </div>
         </div>
     );

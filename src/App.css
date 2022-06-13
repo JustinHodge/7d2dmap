@@ -31,6 +31,19 @@ body {
     display: flex;
 }
 
+.poi-marker-wrapper {
+    width: 0px;
+    height: 0px;
+    position: relative;
+    overflow: visible;
+}
+
+.poi-marker {
+    width: 5px;
+    height: 5px;
+    background-color: red;
+}
+
 #map {
     background-size: contain;
     background-repeat: no-repeat;
