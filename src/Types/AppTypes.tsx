@@ -33,7 +33,9 @@ export interface IMapInfo {
     GenerationSeed?: string;
 }
 
-export interface IPrefabData {}
+export interface IPrefabData {
+    position?: IPosition;
+}
 
 export interface IMapRenderProps {
     mapData: IMapData;
@@ -58,6 +60,15 @@ export interface IFileList {
     biomes?: File;
     mapinfo?: File;
     prefabs?: File;
+}
+
+export interface IPointOfInterestProps {
+    prefab: IPrefabData;
+}
+
+export interface IFolderInputProps {
+    setUploadedFiles: (fileList: IFileList) => void;
+    uploadedFiles: IFileList;
 }
 
 export interface IContentPanelProps {}

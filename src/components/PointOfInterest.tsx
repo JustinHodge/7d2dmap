@@ -1,5 +1,7 @@
-const PointOfInterest = ({ prefab }) => {
-    if (!prefab || !prefab.hasOwnProperty('position')) {
+import { IPointOfInterestProps } from '../Types/AppTypes';
+
+const PointOfInterest = ({ prefab }: IPointOfInterestProps) => {
+    if (!prefab?.position) {
         return null;
     }
 

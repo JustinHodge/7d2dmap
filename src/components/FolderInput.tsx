@@ -1,8 +1,14 @@
-const FolderInput = (props) => {
-    const changeUploadedFiles = (event, uploadedFileType) => {
+import { ChangeEvent } from 'react';
+import { IFolderInputProps } from '../Types/AppTypes';
+
+const FolderInput = (props: IFolderInputProps) => {
+    const changeUploadedFiles = (
+        event: ChangeEvent<HTMLInputElement>,
+        uploadedFileType: string
+    ) => {
         props.setUploadedFiles({
             ...props.uploadedFiles,
-            [uploadedFileType]: event.target.files[0],
+            [uploadedFileType]: event.target.files?.[0],
         });
     };
 
@@ -13,7 +19,9 @@ const FolderInput = (props) => {
                 <input
                     className='folder-input'
                     type='file'
-                    onChange={(event) => changeUploadedFiles(event, 'biomes')}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        changeUploadedFiles(event, 'biomes')
+                    }
                     accept={'image/png'}
                     multiple
                 />
@@ -23,7 +31,9 @@ const FolderInput = (props) => {
                 <input
                     className='folder-input'
                     type='file'
-                    onChange={(event) => changeUploadedFiles(event, 'prefabs')}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        changeUploadedFiles(event, 'prefabs')
+                    }
                     accept={'.xml'}
                     multiple
                 />
@@ -33,7 +43,7 @@ const FolderInput = (props) => {
                 <input
                     className='folder-input'
                     type='file'
-                    onChange={(event) =>
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         changeUploadedFiles(event, 'spawnpoints')
                     }
                     accept={'.xml'}
@@ -45,7 +55,9 @@ const FolderInput = (props) => {
                 <input
                     className='folder-input'
                     type='file'
-                    onChange={(event) => changeUploadedFiles(event, 'mapinfo')}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        changeUploadedFiles(event, 'mapinfo')
+                    }
                     accept={'.xml'}
                     multiple
                 />
