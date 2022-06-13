@@ -1,6 +1,7 @@
 import { IMapRenderProps } from '../Types/AppTypes';
 
 const MapRender = ({ mapData }: IMapRenderProps) => {
+    console.log('mapData', mapData);
     const height = mapData?.mapInfo?.mapGivenSize?.height
         ? mapData.mapInfo?.mapGivenSize.height
         : '500px';

@@ -187,24 +187,40 @@ const ContentPanel = (props: IContentPanelProps) => {
             return;
         }
 
+        const newMapDisplayedSize = {
+            height:
+                (typeof height === 'string' ? parseInt(height) : height) *
+                (zoomPercent / 100),
+            width:
+                (typeof width === 'string' ? parseInt(width) : width) *
+                (zoomPercent / 100),
+        };
+
+        const newMapCenter = {
+            xCoord:
+                ((typeof width === 'string' ? parseInt(width) : width) *
+                    (zoomPercent / 100)) /
+                2,
+            yCoord:
+                ((typeof height === 'string' ? parseInt(height) : height) *
+                    (zoomPercent / 100)) /
+                2,
+        };
+
         const newMapInfo = {
             ...mapData.mapInfo,
-            mapDisplayedSize: {
-                height:
-                    (typeof height === 'string' ? parseInt(height) : height) *
-                    (zoomPercent / 100),
-                width:
-                    (typeof width === 'string' ? parseInt(width) : width) *
-                    (zoomPercent / 100),
-            },
+            mapDisplayedSize: newMapDisplayedSize,
         };
 
         const newMapData = {
             ...mapData,
             mapInfo: newMapInfo,
+            mapCenter: newMapCenter,
         };
 
         setMapData(newMapData);
+
+        console.log('newMapData', newMapData);
     }, [mapData.mapInfo.mapGivenSize, zoomPercent]);
 
     return (
