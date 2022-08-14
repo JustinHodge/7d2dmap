@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import ControlBar from './ControlBar';
 import MapRender from './MapRender';
-import {
-    IContentPanelProps,
-    IFileList,
-    IMapCoordinates,
-    IMapData,
-    IMapInfo,
-    IPosition,
-} from '../Types/AppTypes';
+import { IContentPanelProps, IFileList, IMapData } from '../Types/AppTypes';
 import getPrefabs from '../helpers/getPrefabs';
 import getMapInfo from '../helpers/getMapInfo';
 
@@ -45,8 +38,10 @@ const ContentPanel = (props: IContentPanelProps) => {
             console.error('mapInfoReader.result is not string');
             return;
         }
+
         const mapInfoXMLString = mapInfoReader.result;
         const newMapInfo = getMapInfo(mapInfoXMLString);
+
         setMapData({ ...mapData, mapInfo: newMapInfo });
     };
 
