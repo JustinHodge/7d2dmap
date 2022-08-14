@@ -12,7 +12,6 @@ const getMapInfo = (mapInfoXMLString: string) => {
 
     const properties = mapInfoXML.getElementsByTagName('property');
 
-    console.log(properties);
     const newMapInfo: IMapInfo = {};
     for (const property of properties) {
         const propertyName = property.getAttribute('name') as string;

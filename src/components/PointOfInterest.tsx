@@ -1,8 +1,6 @@
 import { IPointOfInterestProps } from '../Types/AppTypes';
 
 const PointOfInterest = ({ prefab, mapData }: IPointOfInterestProps) => {
-    console.log(mapData);
-    console.log(prefab.position);
     if (!prefab?.position) {
         return null;
     }
