@@ -54,6 +54,8 @@ export interface IControlBarProps {
     setUploadedFiles: (newUploadedFiles: IFileList) => void;
     zoomPercent: number;
     setZoomPercent: (newZoomPercent: number) => void;
+    mapData: IMapData;
+    setMapData: (mapData: IMapData) => void;
 }
 
 export interface IFileList {
