@@ -2,7 +2,9 @@ import { IControlBarProps } from '../Types/AppTypes';
 import FolderInput from './FolderInput';
 import demoBiomesPNG from '../../DemoMap/biomes.png';
 import demoPrefabsXML from '../../DemoMap/prefabs.xml?raw';
+import demoMapInfoXML from '../../DemoMap/map_info.xml?raw';
 import getPrefabs from '../helpers/getPrefabs';
+import getMapInfo from '../helpers/getMapInfo';
 
 const adjustZoom = (currentZoom: number, adjustment: number) => {
     const potentialNewZoom = currentZoom + adjustment;
@@ -35,6 +37,7 @@ const ControlBar = (props: IControlBarProps) => {
                             props.mapData.mapCenter,
                             props.zoomPercent
                         ),
+                        mapInfo: getMapInfo(demoMapInfoXML),
                     });
                 }}
             >

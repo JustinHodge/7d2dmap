@@ -66,6 +66,7 @@ export interface IFileList {
 
 export interface IPointOfInterestProps {
     prefab: IPrefabData;
+    mapData: IMapData;
 }
 
 export interface IFolderInputProps {

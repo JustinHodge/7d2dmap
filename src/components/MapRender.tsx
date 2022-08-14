@@ -26,7 +26,12 @@ const MapRender = ({ mapData }: IMapRenderProps) => {
         <div className='map-render'>
             <div id='map' style={mapStyles}>
                 {mapData.prefabs.map((prefab, index, array) => {
-                    return <PointOfInterest prefab={prefab ?? []} />;
+                    return (
+                        <PointOfInterest
+                            prefab={prefab ?? []}
+                            mapData={mapData}
+                        />
+                    );
                 })}
 
                 {/* <div

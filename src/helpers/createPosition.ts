@@ -21,20 +21,13 @@ const createPosition = (
     const rawY = positionParts[2];
 
     const xPosition = {
-        numericalValue:
-            parseInt(rawX) !== NaN
-                ? mapCenter.xCoord + parseInt(rawX) * (zoomPercent / 100)
-                : 0,
+        numericalValue: !isNaN(parseInt(rawX)) ? parseInt(rawX) : 0,
     };
     const yPosition = {
-        numericalValue:
-            parseInt(rawY) !== NaN
-                ? mapCenter.yCoord - parseInt(rawY) * (zoomPercent / 100)
-                : 0,
+        numericalValue: !isNaN(parseInt(rawY)) ? parseInt(rawY) : 0,
     };
     const zPosition = {
-        numericalValue:
-            parseInt(rawZ) !== NaN ? parseInt(rawZ) * (zoomPercent / 100) : 0,
+        numericalValue: !isNaN(parseInt(rawZ)) ? parseInt(rawZ) : 0,
     };
 
     const positionObject: IPosition = {

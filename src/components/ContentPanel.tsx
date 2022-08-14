@@ -103,13 +103,15 @@ const ContentPanel = (props: IContentPanelProps) => {
             return;
         }
 
+        const mapScale = zoomPercent / 100;
+
         const newMapDisplayedSize = {
             height:
                 (typeof height === 'string' ? parseInt(height) : height) *
-                (zoomPercent / 100),
+                mapScale,
             width:
                 (typeof width === 'string' ? parseInt(width) : width) *
-                (zoomPercent / 100),
+                mapScale,
         };
 
         const newMapCenter = {
@@ -126,6 +128,7 @@ const ContentPanel = (props: IContentPanelProps) => {
         const newMapInfo = {
             ...mapData.mapInfo,
             mapDisplayedSize: newMapDisplayedSize,
+            Scale: mapScale,
         };
 
         const newMapData = {
