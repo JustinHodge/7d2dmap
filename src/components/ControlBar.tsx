@@ -1,7 +1,7 @@
 import { IControlBarProps } from '../Types/AppTypes';
 import FolderInput from './FolderInput';
-import navezganeBiomesPNG from '../../dist/assets/DemoMap-Navezgane20.5/biomes.png';
-import navezganePrefabsXML from '../../dist/assets/DemoMap-Navezgane20.5/prefabs.xml?raw';
+import demoBiomesPNG from '../../DemoMap/biomes.png';
+import demoPrefabsXML from '../../DemoMap/prefabs.xml?raw';
 import getPrefabs from '../helpers/getPrefabs';
 
 const adjustZoom = (currentZoom: number, adjustment: number) => {
@@ -29,9 +29,9 @@ const ControlBar = (props: IControlBarProps) => {
                 onClick={() => {
                     props.setMapData({
                         ...props.mapData,
-                        biomesURL: navezganeBiomesPNG,
+                        biomesURL: demoBiomesPNG,
                         prefabs: getPrefabs(
-                            navezganePrefabsXML,
+                            demoPrefabsXML,
                             props.mapData.mapCenter,
                             props.zoomPercent
                         ),
