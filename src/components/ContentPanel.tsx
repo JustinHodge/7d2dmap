@@ -9,53 +9,8 @@ import {
     IMapInfo,
     IPosition,
 } from '../Types/AppTypes';
-
-const createPosition = (
-    positionString: string | undefined | null,
-    mapCenter: IMapCoordinates | undefined | null,
-    zoomPercent: number
-) => {
-    if (mapCenter === undefined || mapCenter === null) {
-        console.error('mapDisplayedSize invalid');
-        return;
-    }
-
-    if (positionString === undefined || positionString === null) {
-        console.error('position invalid');
-        return;
-    }
-
-    const positionParts = positionString.split(',');
-    const rawX = positionParts[0];
-    const rawZ = positionParts[1];
-    const rawY = positionParts[2];
-
-    const xPosition = {
-        numericalValue:
-            parseInt(rawX) !== NaN
-                ? mapCenter.xCoord + parseInt(rawX) * (zoomPercent / 100)
-                : 0,
-    };
-    const yPosition = {
-        numericalValue:
-            parseInt(rawY) !== NaN
-                ? mapCenter.yCoord - parseInt(rawY) * (zoomPercent / 100)
-                : 0,
-    };
-    const zPosition = {
-        numericalValue:
-            parseInt(rawZ) !== NaN ? parseInt(rawZ) * (zoomPercent / 100) : 0,
-    };
-
-    const positionObject: IPosition = {
-        rawPosition: positionString,
-        xPosition: xPosition,
-        yPosition: yPosition,
-        zPosition: zPosition,
-    };
-
-    return positionObject;
-};
+import getPrefabs from '../helpers/getPrefabs';
+import getMapInfo from '../helpers/getMapInfo';
 
 const ContentPanel = (props: IContentPanelProps) => {
     const [uploadedFiles, setUploadedFiles] = useState({} as IFileList);
@@ -69,7 +24,6 @@ const ContentPanel = (props: IContentPanelProps) => {
 
     const prefabReader = new FileReader();
     const mapInfoReader = new FileReader();
-    const domParser = new DOMParser();
 
     prefabReader.onloadend = () => {
         if (typeof prefabReader.result !== 'string') {
@@ -77,32 +31,11 @@ const ContentPanel = (props: IContentPanelProps) => {
         }
 
         const prefabXMLString = prefabReader.result;
-        if (!prefabXMLString) {
-            return;
-        }
-
-        const prefabXML = domParser.parseFromString(
+        const newPrefabs = getPrefabs(
             prefabXMLString,
-            'text/xml'
+            mapData.mapCenter,
+            zoomPercent
         );
-
-        const decorations = prefabXML.getElementsByTagName('decoration');
-
-        const newPrefabs = [];
-        for (const decoration of decorations) {
-            const newPrefab = {
-                type: decoration.getAttribute('type'),
-                name: decoration.getAttribute('name'),
-                position: createPosition(
-                    decoration.getAttribute('position'),
-                    mapData.mapCenter,
-                    zoomPercent
-                ),
-                rotation: decoration.getAttribute('rotation'),
-                visible: true,
-            };
-            newPrefabs.push(newPrefab);
-        }
         setMapData({ ...mapData, prefabs: newPrefabs });
     };
 
@@ -111,42 +44,8 @@ const ContentPanel = (props: IContentPanelProps) => {
             console.error('mapInfoReader.result is not string');
             return;
         }
-
         const mapInfoXMLString = mapInfoReader.result;
-
-        if (!mapInfoXMLString) {
-            console.error('mapInfoReader.result is empty');
-            return;
-        }
-
-        const mapInfoXML = domParser.parseFromString(
-            mapInfoXMLString,
-            'text/xml'
-        );
-
-        const properties = mapInfoXML.getElementsByTagName('property');
-
-        const newMapInfo: IMapInfo = {};
-        for (const property of properties) {
-            const propertyName = property.getAttribute('name') as string;
-            const propertyValue = property.getAttribute('value') as any;
-            newMapInfo[propertyName as keyof typeof newMapInfo] = propertyValue;
-        }
-
-        const mapSizeParts = newMapInfo?.HeightMapSize?.split(',');
-        const mapGivenSize = {
-            width:
-                Array.isArray(mapSizeParts) && mapSizeParts[0]
-                    ? mapSizeParts[0]
-                    : '',
-            height:
-                Array.isArray(mapSizeParts) && mapSizeParts[1]
-                    ? mapSizeParts[1]
-                    : '',
-        };
-
-        newMapInfo.mapGivenSize = mapGivenSize;
-
+        const newMapInfo = getMapInfo();
         setMapData({ ...mapData, mapInfo: newMapInfo });
     };
 
@@ -249,6 +148,8 @@ const ContentPanel = (props: IContentPanelProps) => {
                 setUploadedFiles={setUploadedFiles}
                 zoomPercent={zoomPercent}
                 setZoomPercent={setZoomPercent}
+                mapData={mapData}
+                setMapData={setMapData}
             />
             <MapRender mapData={mapData} />
         </div>
