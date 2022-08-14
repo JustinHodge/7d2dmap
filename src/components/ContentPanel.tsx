@@ -36,6 +36,7 @@ const ContentPanel = (props: IContentPanelProps) => {
             mapData.mapCenter,
             zoomPercent
         );
+
         setMapData({ ...mapData, prefabs: newPrefabs });
     };
 
@@ -45,7 +46,7 @@ const ContentPanel = (props: IContentPanelProps) => {
             return;
         }
         const mapInfoXMLString = mapInfoReader.result;
-        const newMapInfo = getMapInfo();
+        const newMapInfo = getMapInfo(mapInfoXMLString);
         setMapData({ ...mapData, mapInfo: newMapInfo });
     };
 

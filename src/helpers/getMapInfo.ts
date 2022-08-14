@@ -1,11 +1,11 @@
 import { IMapInfo } from '../Types/AppTypes';
 
-const getMapInfo = (mapInfoXMLString) => {
+const getMapInfo = (mapInfoXMLString: string) => {
     const domParser = new DOMParser();
 
     if (!mapInfoXMLString) {
         console.error('mapInfoReader.result is empty');
-        return;
+        return {};
     }
 
     const mapInfoXML = domParser.parseFromString(mapInfoXMLString, 'text/xml');

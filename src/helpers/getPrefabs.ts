@@ -9,7 +9,7 @@ const getPrefabs = (
     const domParser = new DOMParser();
 
     if (!prefabXMLString) {
-        return;
+        return [];
     }
 
     const prefabXML = domParser.parseFromString(prefabXMLString, 'text/xml');
