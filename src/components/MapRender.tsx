@@ -8,42 +8,37 @@ const MapRender = ({ mapData }: IMapRenderProps) => {
     const width = mapData?.mapInfo?.mapGivenSize?.width
         ? mapData.mapInfo?.mapGivenSize.width
         : '500px';
-    const mapStyles = {
+    const biomeStyles = {
         height: height,
         width: width,
         backgroundImage: mapData?.biomesURL ? `url(${mapData.biomesURL})` : '',
     };
+    const roadStyles = {};
+    const waterStyles = {};
 
     if (mapData?.mapInfo?.mapDisplayedSize?.width) {
-        mapStyles.width = mapData.mapInfo.mapDisplayedSize.width;
+        biomeStyles.width = mapData.mapInfo.mapDisplayedSize.width;
     }
 
     if (mapData?.mapInfo?.mapDisplayedSize?.height) {
-        mapStyles.height = mapData.mapInfo.mapDisplayedSize.height;
+        biomeStyles.height = mapData.mapInfo.mapDisplayedSize.height;
     }
 
     return (
         <div className='map-render'>
-            <div id='map' style={mapStyles}>
-                {mapData.prefabs.map((prefab, index, array) => {
-                    return (
-                        <PointOfInterest
-                            prefab={prefab ?? []}
-                            mapData={mapData}
-                        />
-                    );
-                })}
-
-                {/* <div
-                    style={{
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: 'red',
-                        position: 'relative',
-                        top: mapData.mapCenter.yCoord,
-                        left: mapData.mapCenter.xCoord,
-                    }}
-                ></div> */}
+            <div id='biome' style={biomeStyles}>
+                <div id='water' style={waterStyles}>
+                    <div id='roads' style={roadStyles}>
+                        {mapData.prefabs.map((prefab, index, array) => {
+                            return (
+                                <PointOfInterest
+                                    prefab={prefab ?? []}
+                                    mapData={mapData}
+                                />
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
         </div>
     );
