@@ -3,6 +3,7 @@ import FolderInput from './FolderInput';
 import demoBiomesPNG from '../../DemoMap/biomes.png';
 import demoPrefabsXML from '../../DemoMap/prefabs.xml?raw';
 import demoMapInfoXML from '../../DemoMap/map_info.xml?raw';
+import demoMapRaw from '../../DemoMap/dtm_processed.raw?url';
 import getPrefabs from '../helpers/getPrefabs';
 import getMapInfo from '../helpers/getMapInfo';
 
@@ -19,6 +20,17 @@ const adjustZoom = (currentZoom: number, adjustment: number) => {
 
     return potentialNewZoom;
 };
+
+const getDataRaw = async () => {
+    const rawData = await fetch(demoMapRaw).then((res) => res.blob());
+    const src = new Uint8Array(await rawData.arrayBuffer());
+    const data = new Uint8Array(src.length / 2);
+
+    return data;
+};
+
+const data = getDataRaw();
+console.log(data);
 
 const ControlBar = (props: IControlBarProps) => {
     return (
