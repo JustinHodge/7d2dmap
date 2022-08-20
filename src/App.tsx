@@ -1,4 +1,3 @@
-import './App.css';
 import ContentPanel from './components/ContentPanel';
 import HeaderBar from './components/Header';
 
