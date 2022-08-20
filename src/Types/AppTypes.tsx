@@ -47,6 +47,8 @@ export interface IMapData {
     mapCenter: IMapCoordinates;
     mapInfo: IMapInfo;
     biomesURL?: string;
+    waterURL?: string;
+    roadURL?: string;
 }
 
 export interface IControlBarProps {
