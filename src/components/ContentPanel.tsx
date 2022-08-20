@@ -65,6 +65,8 @@ const ContentPanel = (props: IContentPanelProps) => {
             };
 
             const biomesURL = URL.createObjectURL(uploadedFiles.biomes);
+            const waterURL = '';
+            const roadURL = '';
 
             const tmp_img = new Image();
             tmp_img.src = biomesURL;
@@ -85,6 +87,8 @@ const ContentPanel = (props: IContentPanelProps) => {
                     ...mapData,
                     biomes: uploadedFiles.biomes,
                     biomesURL: biomesURL,
+                    waterURL: waterURL,
+                    roadURL: roadURL,
                     mapCenter: mapCenter,
                     mapInfo: {
                         ...mapData.mapInfo,
