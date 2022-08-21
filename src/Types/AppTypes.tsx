@@ -43,9 +43,9 @@ export interface IMapRenderProps {
 
 export interface IMapData {
     biomes?: File;
-    prefabs: Array<IPrefabData>;
-    mapCenter: IMapCoordinates;
-    mapInfo: IMapInfo;
+    prefabs?: Array<IPrefabData>;
+    mapCenter?: IMapCoordinates;
+    mapInfo?: IMapInfo;
     biomesURL?: string;
     waterURL?: string;
     roadURL?: string;
@@ -58,6 +58,7 @@ export interface IControlBarProps {
     setZoomPercent: (newZoomPercent: number) => void;
     mapData: IMapData;
     setMapData: (mapData: IMapData) => void;
+    demoFiles: IMapData;
 }
 
 export interface IFileList {

@@ -2,6 +2,7 @@ import { IMapRenderProps } from '../Types/AppTypes';
 import PointOfInterest from './PointOfInterest';
 
 const MapRender = ({ mapData }: IMapRenderProps) => {
+    console.log(mapData);
     const height = mapData?.mapInfo?.mapGivenSize?.height
         ? mapData.mapInfo?.mapGivenSize.height
         : '500px';
